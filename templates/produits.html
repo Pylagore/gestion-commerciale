@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h1 class="h3">Produits</h1>
+  <a class="btn btn-success" href="{{ url_for('produit_ajouter') }}">+ Ajouter</a>
+</div>
+<div class="table-responsive">
+<table class="table table-striped bg-white align-middle">
+  <thead><tr><th>#</th><th>Désignation</th><th>Catégorie</th><th class="text-end">Prix de vente (FCFA)</th><th class="text-end">Actions</th></tr></thead>
+  <tbody>
+  {% for p in produits %}
+    <tr>
+      <td>{{ p.id_produit }}</td><td>{{ p.designation }}</td><td>{{ p.categorie }}</td>
+      <td class="text-end">{{ '{:,.0f}'.format(p.prix_vente).replace(',', ' ') }}</td>
+      <td class="text-end">
+        <a class="btn btn-sm btn-outline-primary" href="{{ url_for('produit_modifier', id_produit=p.id_produit) }}">Modifier</a>
+        <form method="post" action="{{ url_for('produit_supprimer', id_produit=p.id_produit) }}" class="d-inline"
+              onsubmit="return confirm('Supprimer ce produit ?');">
+          <button class="btn btn-sm btn-outline-danger">Supprimer</button>
+        </form>
+      </td>
+    </tr>
+  {% else %}
+    <tr><td colspan="5" class="text-center text-muted">Aucun produit.</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+</div>
+{% endblock %}

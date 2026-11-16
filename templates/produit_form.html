@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="h3">{{ 'Modifier' if produit else 'Ajouter' }} un produit</h1>
+{% if not categories %}
+  <div class="alert alert-warning">Créez d'abord une <a href="{{ url_for('categorie_ajouter') }}">catégorie</a>.</div>
+{% else %}
+<form method="post" class="card card-body" style="max-width:500px">
+  <div class="mb-3">
+    <label class="form-label" for="designation">Désignation</label>
+    <input class="form-control" id="designation" name="designation" maxlength="150" required
+           value="{{ request.form.get('designation', produit.designation if produit else '') }}">
+  </div>
+  <div class="mb-3">
+    <label class="form-label" for="prix_vente">Prix de vente (FCFA)</label>
+    <input class="form-control" id="prix_vente" name="prix_vente" type="number" min="0" step="any" required
+           value="{{ request.form.get('prix_vente', produit.prix_vente if produit else '') }}">
+  </div>
+  <div class="mb-3">
+    <label class="form-label" for="id_categorie">Catégorie</label>
+    {% set sel = (request.form.get('id_categorie') or (produit.id_categorie if produit else ''))|string %}
+    <select class="form-select" id="id_categorie" name="id_categorie" required>
+      <option value="">-- Choisir --</option>
+      {% for c in categories %}
+        <option value="{{ c.id_categorie }}" {{ 'selected' if sel == c.id_categorie|string }}>{{ c.libelle }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div>
+    <button class="btn btn-success">Enregistrer</button>
+    <a class="btn btn-secondary" href="{{ url_for('produits') }}">Annuler</a>
+  </div>
+</form>
+{% endif %}
+{% endblock %}

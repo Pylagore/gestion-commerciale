@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="h3">{{ 'Modifier' if categorie else 'Ajouter' }} une catégorie</h1>
+<form method="post" class="card card-body" style="max-width:500px">
+  <div class="mb-3">
+    <label class="form-label" for="libelle">Libellé</label>
+    <input class="form-control" id="libelle" name="libelle" maxlength="100" required
+           value="{{ request.form.get('libelle', categorie.libelle if categorie else '') }}">
+  </div>
+  <div>
+    <button class="btn btn-success">Enregistrer</button>
+    <a class="btn btn-secondary" href="{{ url_for('categories') }}">Annuler</a>
+  </div>
+</form>
+{% endblock %}
